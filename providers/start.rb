@@ -20,15 +20,10 @@ action :start_worker do
     group node.hadoop_spark.group
     cwd node.hadoop_spark.base_dir
     code <<-EOF
-     
     . sbin/spark-config.sh
-
-# Spark 1.4.x
+# Spark >1.4.x
     ./sbin/start-slave.sh #{new_resource.master_url}
-# Spark 1.3.x
-#    ./sbin/start-slave.sh #{new_resource.worker_id} #{new_resource.master_url}
     EOF
-#    not_if "#{node.hadoop_spark.home}/sbin/start-slave.sh --properties-file #{node.hadoop_spark.home}/conf/spark-defaults.conf | grep \"stop it first\""
      not_if "jps | grep Worker"
   end
  
